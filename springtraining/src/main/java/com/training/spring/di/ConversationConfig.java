@@ -13,15 +13,18 @@ import org.springframework.core.env.Environment;
 public class ConversationConfig {
 
     @Autowired
-    private Environment env;
+    private Environment        env;
 
     @Value("${conversation.language}")
-    private String      language;
+    private String             language;
+
+    @Autowired
+    private LanguageProperties lp;
 
     @Bean
     @Qualifier("dynamic")
     public IConversation conCreation() {
-        switch (this.language) {
+        switch (this.lp.getLanguage()) {
             case "tr":
                 return new TrConver();
             case "eng":
@@ -33,6 +36,22 @@ public class ConversationConfig {
                 return new EngConver();
         }
     }
+
+    //    @Bean
+    //    @Qualifier("dynamic")
+    //    public IConversation conCreation() {
+    //        switch (this.language) {
+    //            case "tr":
+    //                return new TrConver();
+    //            case "eng":
+    //            case "en":
+    //                return new EngConver();
+    //            case "esp":
+    //                return new EspConver();
+    //            default:
+    //                return new EngConver();
+    //        }
+    //    }
 
     //    @Bean
     //    @Qualifier("dynamic")
