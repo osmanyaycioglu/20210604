@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.training.spring.facade.PaymentRequest;
 
-@FeignClient("ACCOUNTING")
+@FeignClient(value = "ACCOUNTING")
 @RequestMapping("/api/v1/restaurant/payment")
 public interface IAccountingClient {
 

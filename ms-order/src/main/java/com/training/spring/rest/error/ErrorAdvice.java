@@ -94,6 +94,7 @@ public class ErrorAdvice {
         //                    .setErrorCause(100);
         //
         //        }
+        exp.printStackTrace();
         return new ErrorObj().setBoundedContext(ErrorAdvice.BOUNDED_CONTEXT_STRING)
                              .setMicroservice(ErrorAdvice.MICROSERVICE_STRING)
                              .setMessage(exp.getMessage())

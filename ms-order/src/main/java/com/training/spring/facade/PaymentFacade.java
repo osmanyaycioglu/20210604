@@ -2,6 +2,7 @@ package com.training.spring.facade;
 
 import java.util.List;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -25,11 +26,21 @@ public class PaymentFacade {
     @Autowired
     private IAccountingClient ac;
 
+    @Autowired
+    private RabbitTemplate    rt;
+
     public String pay(final Order orderParam) throws MyRestException {
         PaymentRequest pRequestLoc = new PaymentRequest();
         pRequestLoc.setAmount(100);
         pRequestLoc.setCustomerId(orderParam.getCutomerId());
-        return this.ac.pay(pRequestLoc);
+        String payLoc = this.ac.pay(pRequestLoc);
+        Message messageLoc = new Message();
+        messageLoc.setDest("3284672364");
+        messageLoc.setContent("30 dak içinde siparişiniz size ulaşacak");
+        this.rt.convertAndSend("sms-topic-exchange",
+                               "send.sms.delivery",
+                               messageLoc);
+        return payLoc;
     }
 
     public String pay3(final Order orderParam) {
